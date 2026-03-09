@@ -1,0 +1,6 @@
+[data-testid="stHorizontalBlock"] > div:nth-child(2) [data-testid="stVerticalBlock"] {
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: #7e99aba1;
+    border: 2px solid #6a79ae;
+}
