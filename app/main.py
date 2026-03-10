@@ -142,15 +142,10 @@ def add_predictions(input_data):
   model = pickle.load(open("model/model.pkl", "rb"))
   scaler = pickle.load(open("model/scaler.pkl", "rb"))
   
-<<<<<<< HEAD
-  input_df = pd.DataFrame([input_data])
-  input_df = input_df.reindex(columns=X.columns)
-
-=======
   input_array = np.array(list(input_data.values())).reshape(1, -1)
   
   input_array_scaled = scaler.transform(input_array)
->>>>>>> 9c5bcc6 (fixed prediction pipeline and scaling)
+
   
   prediction = model.predict(input_array_scaled)
   
