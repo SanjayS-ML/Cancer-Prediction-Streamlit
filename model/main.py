@@ -7,7 +7,7 @@ import pickle
 
 
 def get_clean_data():
-    data=pd.read_csv(r'C:\Users\suvee\OneDrive\Streamlit python\data\data.csv')
+    data=pd.read_csv('data/data.csv')
     
     data = data.drop(['Unnamed: 32','id'],axis=1)
 
@@ -20,14 +20,15 @@ def create_model(data):
 
     
 
-    #split the data
-    X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
-
-    #scale the data 
+    scaler = StandardScaler()
+    
+  
+    # split the data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.fit_transform(X_test)
-    
+    X_test_scaled = scaler.transform(X_test)
     #train
     model = LogisticRegression()
     model.fit(X_train_scaled,y_train)
@@ -53,4 +54,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-

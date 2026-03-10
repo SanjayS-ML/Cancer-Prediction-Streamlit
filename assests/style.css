@@ -1,6 +1,19 @@
-[data-testid="stHorizontalBlock"] > div:nth-child(2) [data-testid="stVerticalBlock"] {
-    padding: 1rem;
-    border-radius: 12px;
-    background-color: #7e99aba1;
-    border: 2px solid #6a79ae;
+.css-j5r0tf {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #7E99AB;
+}
+
+.diagnosis {
+  color: #fff;
+  padding: 0.2em 0.5em;
+  border-radius: 0.5em;
+}
+
+.diagnosis.benign {
+  background-color: #01DB4B
+}
+
+.diagnosis.malicious {
+  background-color: #ff4b4b
 }
