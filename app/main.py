@@ -1,8 +1,8 @@
 import streamlit as st
+import pickle
 import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
-import pickle 
 
 
 def get_clean_data():
@@ -141,17 +141,18 @@ def get_radar_chart(input_data):
 def add_predictions(input_data):
   model = pickle.load(open("model/model.pkl", "rb"))
   scaler = pickle.load(open("model/scaler.pkl", "rb"))
-
-  data = get_clean_data()
-  X = data.drop(['diagnosis'],axis=1) 
   
+<<<<<<< HEAD
   input_df = pd.DataFrame([input_data])
   input_df = input_df.reindex(columns=X.columns)
 
+=======
+  input_array = np.array(list(input_data.values())).reshape(1, -1)
   
-  input_scaled = scaler.transform(input_df)
+  input_array_scaled = scaler.transform(input_array)
+>>>>>>> 9c5bcc6 (fixed prediction pipeline and scaling)
   
-  prediction = model.predict(input_scaled)
+  prediction = model.predict(input_array_scaled)
   
   st.subheader("Cell cluster prediction")
   st.write("The cell cluster is:")
@@ -162,8 +163,8 @@ def add_predictions(input_data):
     st.write("<span class='diagnosis malicious'>Malicious</span>", unsafe_allow_html=True)
     
   
-  st.write("Probability of being benign: ", model.predict_proba(input_scaled)[0][0])
-  st.write("Probability of being malicious: ", model.predict_proba(input_scaled)[0][1])
+  st.write("Probability of being benign: ", model.predict_proba(input_array_scaled)[0][0])
+  st.write("Probability of being malicious: ", model.predict_proba(input_array_scaled)[0][1])
   
   st.write("This app can assist medical professionals in making a diagnosis, but should not be used as a substitute for a professional diagnosis.")
 
