@@ -139,29 +139,36 @@ def get_radar_chart(input_data):
 
 
 def add_predictions(input_data):
-  model = pickle.load(open("model/model.pkl", "rb"))
-  scaler = pickle.load(open("model/scaler.pkl", "rb"))
-  
-  input_array = np.array(list(input_data.values())).reshape(1, -1)
-  
-  input_array_scaled = scaler.transform(input_array)
-
-  
-  prediction = model.predict(input_array_scaled)
-  
-  st.subheader("Cell cluster prediction")
-  st.write("The cell cluster is:")
-  
-  if prediction[0] == 0:
-    st.write("<span class='diagnosis benign'>Benign</span>", unsafe_allow_html=True)
-  else:
-    st.write("<span class='diagnosis malicious'>Malicious</span>", unsafe_allow_html=True)
+    # Use standard pickle for loading
+    model = pickle.load(open("model/model.pkl", "rb"))
+    scaler = pickle.load(open("model/scaler.pkl", "rb"))
     
-  
-  st.write("Probability of being benign: ", model.predict_proba(input_array_scaled)[0][0])
-  st.write("Probability of being malicious: ", model.predict_proba(input_array_scaled)[0][1])
-  
-  st.write("This app can assist medical professionals in making a diagnosis, but should not be used as a substitute for a professional diagnosis.")
+    # 1. Ensure feature order
+    data = get_clean_data()
+    X = data.drop(['diagnosis'], axis=1)
+    ordered_values = [input_data[col] for col in X.columns]
+    input_array = np.array(ordered_values).reshape(1, -1)
+    
+    # 2. Scale
+    input_array_scaled = scaler.transform(input_array)
+    
+    # 3. Predict & Get Probabilities
+    prediction = model.predict(input_array_scaled)
+    probabilities = model.predict_proba(input_array_scaled) # Get them once here
+
+    st.subheader("Cell cluster prediction")
+    st.write("The cell cluster is:")
+    
+    if prediction[0] == 0:
+        st.markdown('<div class="diagnosis benign">Benign</div>', unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="diagnosis malicious">Malicious</div>', unsafe_allow_html=True)
+    
+    # Use the 'probabilities' variable we just created
+    st.write("Probability of being benign: ", round(probabilities[0][0], 4))
+    st.write("Probability of being malicious: ", round(probabilities[0][1], 4))
+    
+    st.write("This app can assist medical professionals in making a diagnosis.")
 
 
 
